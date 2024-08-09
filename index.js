@@ -3,6 +3,7 @@ import {
     GatewayIntentBits
 } from 'discord.js';
 import { config } from 'dotenv';
+import { eventsLoad } from './Utils/handler.js';
 
 const bot = new Client({
     intents: [
@@ -15,6 +16,7 @@ const bot = new Client({
 
 config();
 
+bot.events = eventsLoad(bot);
 bot.login(process.env.TOKEN);
 
 export default bot;
