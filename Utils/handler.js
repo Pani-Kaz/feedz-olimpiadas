@@ -8,7 +8,7 @@ export async function eventsLoad (client) {
             const eventFile = (await import(`../Events/${eventSubPath}/${event}`))?.default;
 
             if(eventFile.once) client.once(eventFile.action, eventFile.run);
-            else client.on(eventFile.action, ((...e) => eventFile.run(client, e)))   
+            else client.on(eventFile.action, (...e) => eventFile.run(client, ...e))   
         })
     })
 }
