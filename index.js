@@ -17,4 +17,4 @@ config();
 
 bot.login(process.env.TOKEN);
 
-module.exports = bot;
+export default bot;
