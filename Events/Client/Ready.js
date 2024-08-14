@@ -4,6 +4,6 @@ export default {
     once: true,
     run: async (client) => {
         console.log(`Started at ${new Date().toISOString()} in ${client.user.username}`);
-        
+        await client.application?.commands.set(client.commands);
     }
 }

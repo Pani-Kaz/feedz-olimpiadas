@@ -12,3 +12,18 @@ export async function eventsLoad (client) {
         })
     })
 }
+
+export async function commandsLoad (client) {
+    let commands = [];
+
+    const commandsSubPath =  fs.readdirSync('./Commands');
+    commandsSubPath.forEach(commandPath => {
+        const commands = fs.readdirSync(`./Commands/${commandPath}`);
+        commands.forEach(async command => {
+            const commandFile = (await import(`../Commands/${commandPath}/${command}`))?.default;
+            client.commands.set(commandFile.name, commandFile)
+        })
+    });
+
+    return commands
+}
