@@ -7,8 +7,8 @@ export default {
     once: false,
     run: async (client, interaction) => {
         if(interaction.isButton()) {
-            if(interaction.customId.includes('like')) {
-                let idPost = client.db.get('images.'+interaction.customId.split(' ')[1]);
+            if(interaction.customId == 'like') {
+                let idPost = client.db.get('images.'+interaction.message.id);
                 if(!idPost) return interaction.reply({content: `❌ | Não consegui encontrar o post mencionado!`, ephemeral: true});
 
                 let message = `✅ | Você curtiu a publicação de <@${idPost.author}>!`

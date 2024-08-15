@@ -16,7 +16,7 @@ export default {
             if ((recentsDates.filter(i => i.includes(actualDate)).length >= 5)) {
                 await message.delete().catch(err => { })
                 return message.channel.send({
-                    content: `❌ | ${message.author.toString()} Você já atingiu 5 pontos hoje! Volte amanhã 🙃`
+                    content: `❌ | ${message.author.toString()} Você já atingiu 3 pontos hoje! Volte amanhã 🙃`
                 }).then(m => { setTimeout(() => { m.delete() }, 5000) })
             }
 
@@ -41,17 +41,14 @@ export default {
             client.db.add(`events-points.${message.author.id}.points`, 1);
             client.db.push(`events-points.${message.author.id}.logs`, new Date().toISOString());  
 
-            client.db.set(`images.${message.id}.author`, message.author.id)
-            client.db.set(`images.${message.id}.likes`, 0)
-
-            await message.channel.send({
+            const msg = await message.channel.send({
                 files: [Attachment],
                 content: `> Enviado por: ${message.author.toString()}\n${message.content ? `\`\`\`${message.content}\`\`\`` : ''}`,
                 components: [
                     new ActionRowBuilder()
                     .addComponents(
                         new ButtonBuilder()
-                        .setCustomId('like ' + message.id)
+                        .setCustomId('like')
                         .setLabel('0')
                         .setEmoji('❤')
                         .setStyle(ButtonStyle.Secondary)
@@ -59,8 +56,15 @@ export default {
                 ]
             });
 
+            client.db.set(`images.${msg.id}.author`, message.author.id)
+            client.db.set(`images.${msg.id}.likes`, 0)
+
             await message.delete().catch(err => {});
 
+            const logs = await client.channels.cache.get(config.logs.points);
+            if(logs) logs.send({
+                content: `\`${message.author.username} (ID: ${message.author.id})\` enviou uma nova imagem! O usuário se encontra com ${client.db.get(`events-points.${message.author.id}.points`) || 0} pontos`
+            }).catch(err => {})
         }
     }
 }
