@@ -19,13 +19,18 @@ const bot = new Client({
 config();
 
 bot.events = eventsLoad(bot);
+
 bot.db = new JsonDatabase({
     databasePath: './database/data.json'
 });
-bot.commands = new Collection();
 
+bot.commands = new Collection();
 commandsLoad(bot);
 
 bot.login(process.env.TOKEN);
+
+process.on('uncaughtException', function (err) {
+    console.error(err);
+});
 
 export default bot;
