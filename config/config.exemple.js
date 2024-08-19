@@ -1,5 +1,16 @@
 export default {
     "guild": "",
+    "logs": {
+        "points": "",
+        "times": ""
+    },
+    "manage": "",
+    "channels": {
+        "rules": "",
+        "info": "",
+        "send-a-pic": "",
+        "ranks": ""
+    },
     "teams": {
         "yellow": {
             "role": "",
@@ -18,18 +29,6 @@ export default {
             "channel": ""
         },
         "purple": {
-            "role": "",
-            "channel": ""
-        },
-        "pink": {
-            "role": "",
-            "channel": ""
-        },
-        "orange": {
-            "role": "",
-            "channel": ""
-        },
-        "brown": {
             "role": "",
             "channel": ""
         }
