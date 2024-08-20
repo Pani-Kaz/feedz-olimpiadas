@@ -6,6 +6,7 @@ import {
 import { config } from 'dotenv';
 import { commandsLoad, eventsLoad } from './Utils/handler.js';
 import { JsonDatabase } from 'wio.db';
+import path from 'path';
 
 const bot = new Client({
     intents: [
@@ -21,7 +22,7 @@ config();
 bot.events = eventsLoad(bot);
 
 bot.db = new JsonDatabase({
-    databasePath: './database/data.json'
+    databasePath: path.join(__dirname, 'database', 'data.json')
 });
 
 bot.commands = new Collection();

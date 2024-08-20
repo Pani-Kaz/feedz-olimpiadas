@@ -10,7 +10,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "nodemonConfig": {
-    "ignore": ["**/database/**"]
+    "ignore": [
+      "**/database/**"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,7 @@
     "canvas": "^2.11.2",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
+    "path": "^0.12.7",
     "wio.db": "^4.0.22"
   },
   "devDependencies": {
