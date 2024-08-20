@@ -14,10 +14,12 @@ export default {
 
             let position = client.db.get('events-points');
             position = Object.entries(position)
+            const allUsersInEvent = position;
+
             position = position.map(data => ({...data[1], id: data[0]}));
             position = position.sort((a, b) => b.points - a.points)
             position = (position.indexOf(position.find(i=> i.id == interaction.user.id)))
-            if(position < 0 || !position || isNaN(position)) position = position.length
+            if(position < 0 || !position || isNaN(position)) position = allUsersInEvent.length
             else position++
 
             interaction.reply({
