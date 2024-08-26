@@ -30,7 +30,7 @@ export default {
                 let all_posts = client.db.get('images');
                 all_posts = Object.entries(all_posts);
     
-                const post_users = all_posts.filter(i => users.includes(i.author));
+                const post_users = all_posts.filter(i => users.includes(i[1].author));
                 let points = client.db.get('events-points');
                 points = Object.entries(points)
                 points = points.filter(i => users.includes(i[0]))

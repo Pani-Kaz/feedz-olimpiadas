@@ -120,7 +120,7 @@ export default {
       });
 
       client.db.set(`images.${msg.id}.author`, message.author.id);
-      client.db.set(`images.${msg.id}.likes`, 0);
+      client.db.set(`images.${msg.id}.like`, 0);
       client.db.set(`images.${msg.id}.joy`, 0);
       client.db.set(`images.${msg.id}.muscle`, 0);
       client.db.set(`images.${msg.id}.yum`, 0);
