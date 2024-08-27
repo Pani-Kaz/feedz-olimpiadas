@@ -9,7 +9,8 @@ export default {
         "rules": "",
         "info": "",
         "send-a-pic": "",
-        "ranks": ""
+        "ranks": "",
+        "var": ""
     },
     "teams": {
         "yellow": {
