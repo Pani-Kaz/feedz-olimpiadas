@@ -5,6 +5,7 @@ import {
   ButtonStyle,
 } from "discord.js";
 import config from "../../config/config.js";
+import moment from "moment-timezone";
 
 export default {
   name: "events-messages",
@@ -72,9 +73,11 @@ export default {
       const Attachment = new AttachmentBuilder(file.attachment);
 
       client.db.add(`events-points.${message.author.id}.points`, 1);
+
+      const actualDate = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD");
       client.db.push(
         `events-points.${message.author.id}.logs`,
-        new Date().toISOString()
+        moment().tz("America/Sao_Paulo").toISOString()
       );
       const memberRoles = message.member.roles.cache.toJSON().map((i) => i.id);
       const teams = Object.entries(config.teams).map((data) => ({

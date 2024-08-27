@@ -21,6 +21,7 @@
     "canvas": "^2.11.2",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
+    "moment-timezone": "^0.5.45",
     "path": "^0.12.7",
     "wio.db": "^4.0.22"
   },
