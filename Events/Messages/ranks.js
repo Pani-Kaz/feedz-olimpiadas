@@ -27,7 +27,12 @@ export default {
                     .addComponents(
                         new ButtonBuilder()
                         .setCustomId('rank-user')
-                        .setLabel(' Veja seu rank')
+                        .setLabel(' Seu perfil')
+                        .setStyle(ButtonStyle.Primary)
+                        .setEmoji('💻'),
+                        new ButtonBuilder()
+                        .setCustomId('rank-user-all')
+                        .setLabel(' Rank de usuários')
                         .setStyle(ButtonStyle.Secondary)
                         .setEmoji('👥'),
                         new ButtonBuilder()

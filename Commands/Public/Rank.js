@@ -1,4 +1,4 @@
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
 
 export default {
     name: 'rank',
@@ -11,18 +11,75 @@ export default {
 
         let points = client.db.get('events-points');
         points = Object.entries(points);
-        points = points.map(i => ({id:i[0], ...i[1]}))
-        points = points.sort((a,b) => b.points - a.points).splice(0, 10);
-        points = points.map(i => ({...i, posts: all_posts.filter(j=> j[1].author == i.id).length}))
+        points = points.map(i => ({id:i[0], ...i[1]}));
+        points = points.sort((a,b) => b.points - a.points);
 
-        inter.editReply({
-            embeds: [
-                new EmbedBuilder ()
+        const pageSize = 5;
+        let currentPage = 0;
+        const totalPages = Math.ceil(points.length / pageSize);
+
+        const generateEmbed = (page) => {
+            const start = page * pageSize;
+            const end = start + pageSize;
+            const pagePoints = points.slice(start, end);
+            return new EmbedBuilder()
                 .setColor('Blue')
-                .setTitle('Rank | ' + inter.guild.name)
+                .setTitle(`Rank | ${inter.guild.name}`)
                 .setThumbnail(inter.guild.iconURL())
-                .setDescription(`${points.map((d, i) => `${i + 1}º - <@${d.id}> (ID: ${d.id})\n💻 Total de pontos: **${d.points} pontos**\n🎨 Total de postagens: **${d.posts} imagens**`).join('\n\n')}`)
-            ]
-        })
+                .setDescription(pagePoints.map((d, i) => 
+                    `- <@${d.id}> (ID: ${d.id})\n💻 Total de pontos: **${d.points} pontos**\n🎨 Total de postagens: **${all_posts.filter(j => j[1].author == d.id).length} imagens**`
+                ).join('\n\n'))
+                .setFooter({ text: `Página ${page + 1} de ${totalPages}` });
+        };
+
+        const row = new ActionRowBuilder()
+            .addComponents(
+                new ButtonBuilder()
+                    .setCustomId('prev')
+                    .setLabel('◀️')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(currentPage === 0),
+                new ButtonBuilder()
+                    .setCustomId('next')
+                    .setLabel('▶️')
+                    .setStyle(ButtonStyle.Primary)
+                    .setDisabled(currentPage === totalPages - 1)
+            );
+
+        const message = await inter.editReply({
+            embeds: [generateEmbed(currentPage)],
+            components: [row]
+        });
+
+        const collector = message.createMessageComponentCollector({ time: 60000 });
+
+        collector.on('collect', async i => {
+            if (i.user.id !== inter.user.id) return;
+
+            if (i.customId === 'prev' && currentPage > 0) {
+                currentPage--;
+            } else if (i.customId === 'next' && currentPage < totalPages - 1) {
+                currentPage++;
+            }
+
+            const updatedRow = new ActionRowBuilder()
+                .addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('prev')
+                        .setLabel('◀️')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(currentPage === 0),
+                    new ButtonBuilder()
+                        .setCustomId('next')
+                        .setLabel('▶️')
+                        .setStyle(ButtonStyle.Primary)
+                        .setDisabled(currentPage === totalPages - 1)
+                );
+
+            await i.update({
+                embeds: [generateEmbed(currentPage)],
+                components: [updatedRow]
+            });
+        });
     }
 }

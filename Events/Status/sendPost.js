@@ -76,12 +76,30 @@ export default {
         `events-points.${message.author.id}.logs`,
         new Date().toISOString()
       );
+      const memberRoles = message.member.roles.cache.toJSON().map((i) => i.id);
+      const teams = Object.entries(config.teams).map((data) => ({
+        name: data[0],
+        ...data[1],
+      }));
+      let userTeam;
+
+      teams.forEach((t) => {
+        if (memberRoles.includes(t.role)) userTeam = t;
+      });
+
+      const emojis = {
+        yellow: "🟡",
+        red: "🔴",
+        blue: "🔵",
+        green: "🟢",
+        purple: "🟣",
+      };
 
       const msg = await message.channel.send({
         files: [Attachment],
-        content: `> Enviado por: ${message.author.toString()}\n${
-          message.content ? `\`\`\`${message.content}\`\`\`` : ""
-        }`,
+        content: `> Enviado por: ${message.author.toString()} ${
+          userTeam ? emojis[userTeam.name] : ""
+        }\n${message.content ? `\`\`\`${message.content}\`\`\`` : ""}`,
         components: [
           new ActionRowBuilder().addComponents(
             new ButtonBuilder()
@@ -114,7 +132,11 @@ export default {
             new ButtonBuilder()
               .setCustomId("delete")
               .setEmoji("🗑")
-              .setStyle(ButtonStyle.Danger)
+              .setStyle(ButtonStyle.Danger),
+            new ButtonBuilder()
+              .setCustomId("var")
+              .setEmoji("🏁")
+              .setStyle(ButtonStyle.Primary)
           ),
         ],
       });
@@ -125,8 +147,7 @@ export default {
       client.db.set(`images.${msg.id}.muscle`, 0);
       client.db.set(`images.${msg.id}.yum`, 0);
       client.db.set(`images.${msg.id}.rocket`, 0);
-      client.db.set(`images.${msg.id}.boost`, 'false');
-
+      client.db.set(`images.${msg.id}.boost`, "false");
 
       await message.delete().catch((err) => {});
 

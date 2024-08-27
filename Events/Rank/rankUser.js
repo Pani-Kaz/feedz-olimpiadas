@@ -10,17 +10,7 @@ export default {
             let all_posts = client.db.get('images');
             all_posts = Object.entries(all_posts);
 
-            const post_users = all_posts.filter(i => i.author == interaction.user.id);
-
-            let position = client.db.get('events-points');
-            position = Object.entries(position)
-            const allUsersInEvent = position;
-
-            position = position.map(data => ({...data[1], id: data[0]}));
-            position = position.sort((a, b) => b.points - a.points)
-            position = (position.indexOf(position.find(i=> i.id == interaction.user.id)))
-            if(position < 0 || !position || isNaN(position)) position = allUsersInEvent.length
-            else position++
+            const post_users = all_posts.filter(i => i[1].author == interaction.user.id);
 
             interaction.reply({
                 embeds: [
@@ -42,12 +32,7 @@ export default {
                                 name: '💻 Postagens totais',
                                 value: `**${post_users.length} Postagens**`,
                                 inline: true
-                            },
-                            {
-                                name: '📊 Posição no rank',
-                                value: `**${position}º lugar**`,
-                                inline: true
-                            },
+                            }
                         )
                 ],
                 ephemeral: true

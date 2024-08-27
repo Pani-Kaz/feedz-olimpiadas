@@ -93,7 +93,12 @@ export default {
                           new ButtonBuilder()
                             .setCustomId("delete")
                             .setEmoji("🗑")
-                            .setStyle(ButtonStyle.Danger)
+                            .setStyle(ButtonStyle.Danger),
+                            new ButtonBuilder()
+                            .setCustomId("var")
+                            .setEmoji("🏁")
+                            .setDisabled(client.db.get('images.' + messageId + '.var') == 'true')
+                            .setStyle(ButtonStyle.Primary)
                         ),
                       ],
                 });
