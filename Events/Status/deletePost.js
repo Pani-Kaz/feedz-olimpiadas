@@ -15,13 +15,13 @@ export default {
                 const messageId = interaction.message.id;
                 
                 if ((idPost?.author == interaction.user.id) || interaction.member.roles.cache.get(config.manage)) {
-                    let data = client.db.get(`events-points.${interaction.user.id}.logs`);
+                    let data = client.db.get(`events-points.${idPost.author}.logs`);
                     if(data) {
                         data.splice(0, 1);
-                        client.db.set(`events-points.${interaction.user.id}.logs`, data);
+                        client.db.set(`events-points.${idPost.author}.logs`, data);
                     };
 
-                    client.db.substr(`events-points.${interaction.user.id}.points`, 1);
+                    client.db.substr(`events-points.${idPost.author}.points`, 1);
                     client.db.delete('images.' + interaction.message.id)
                     message = `✅ | Você deletou esse post post!`;
                     await interaction.message.delete()
