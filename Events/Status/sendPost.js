@@ -22,7 +22,21 @@ export default {
       if (message.channel.id === config.channels["send-a-pic"]) {
         const recentsDates =
           client.db.get(`events-points.${message.author.id}.logs`) || [];
-          const actualDate = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD");
+        const dataHora = new Date();
+        const opcoes = {
+          timeZone: "America/Sao_Paulo",
+          year: "numeric",
+          month: "numeric",
+          day: "numeric",
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric",
+        };
+
+        const dateString = dataHora.toLocaleString("pt-BR", opcoes);
+        const [datePart] = dateString.split(", ");
+        const [day, month, year] = datePart.split("/");
+        const actualDate = `${year}-${month}-${day}`;
 
         if (recentsDates.filter((i) => i.includes(actualDate)).length >= 4) {
           await message.delete().catch((err) => {});
@@ -73,10 +87,24 @@ export default {
       const Attachment = new AttachmentBuilder(file.attachment);
 
       client.db.add(`events-points.${message.author.id}.points`, 1);
+      const dataHora = new Date();
+      const opcoes = {
+        timeZone: "America/Sao_Paulo",
+        year: "numeric",
+        month: "numeric",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      };
 
+      const dateString = dataHora.toLocaleString("pt-BR", opcoes);
+      const [datePart, timePart] = dateString.split(", ");
+      const [day, month, year] = datePart.split("/");
+      const formattedDateString = `${year}-${month}-${day}T${timePart}`;
       client.db.push(
         `events-points.${message.author.id}.logs`,
-          moment().tz("America/Sao_Paulo").toISOString()
+        formattedDateString
       );
       const memberRoles = message.member.roles.cache.toJSON().map((i) => i.id);
       const teams = Object.entries(config.teams).map((data) => ({
