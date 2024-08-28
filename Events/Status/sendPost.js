@@ -22,7 +22,7 @@ export default {
       if (message.channel.id === config.channels["send-a-pic"]) {
         const recentsDates =
           client.db.get(`events-points.${message.author.id}.logs`) || [];
-        const actualDate = new Date().toISOString().slice(0, 10);
+          const actualDate = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD");
 
         if (recentsDates.filter((i) => i.includes(actualDate)).length >= 4) {
           await message.delete().catch((err) => {});
@@ -74,10 +74,9 @@ export default {
 
       client.db.add(`events-points.${message.author.id}.points`, 1);
 
-      const actualDate = moment().tz("America/Sao_Paulo").format("YYYY-MM-DD");
       client.db.push(
         `events-points.${message.author.id}.logs`,
-        moment().tz("America/Sao_Paulo").toISOString()
+          moment().tz("America/Sao_Paulo").toISOString()
       );
       const memberRoles = message.member.roles.cache.toJSON().map((i) => i.id);
       const teams = Object.entries(config.teams).map((data) => ({
