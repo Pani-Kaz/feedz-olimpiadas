@@ -23,6 +23,7 @@
     "dotenv": "^16.4.5",
     "moment-timezone": "^0.5.45",
     "path": "^0.12.7",
+    "util": "^0.12.5",
     "wio.db": "^4.0.22"
   },
   "devDependencies": {
