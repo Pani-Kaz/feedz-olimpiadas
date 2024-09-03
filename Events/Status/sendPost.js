@@ -85,7 +85,6 @@ export default {
       }
 
       const Attachment = new AttachmentBuilder(file.attachment);
-
       client.db.add(`events-points.${message.author.id}.points`, 1);
       const dataHora = new Date();
       const opcoes = {
@@ -102,10 +101,12 @@ export default {
       const [datePart, timePart] = dateString.split(", ");
       const [day, month, year] = datePart.split("/");
       const formattedDateString = `${year}-${month}-${day}T${timePart}`;
-      client.db.push(
-        `events-points.${message.author.id}.logs`,
-        formattedDateString
-      );
+      if (message.channel.id === config.channels["send-a-pic"]) {
+        client.db.push(
+          `events-points.${message.author.id}.logs`,
+          formattedDateString
+        );
+      }
       const memberRoles = message.member.roles.cache.toJSON().map((i) => i.id);
       const teams = Object.entries(config.teams).map((data) => ({
         name: data[0],
